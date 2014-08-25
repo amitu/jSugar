@@ -4,7 +4,7 @@ This is a fork of [phiggins42/plugd](https://github.com/phiggins42/plugd). Plugd
 wanted to be a toy library, this one is more serious.
 
 This **intends to be** a jquery compatility shim. The initial goal is to be
-compatible enough to run ]zurb.foundation](http://foundation.zurb.com). We are
+compatible enough to run [zurb.foundation](http://foundation.zurb.com). We are
 not yet.
 
 
@@ -47,11 +47,6 @@ To start, try it out! Plop `jSugar/$` into any Dojo-enabled page and play around
 with the API's provided. If something doesn't work as you'd expect, or some 
 convenient function is missing, mention it in the issue tracker. 
 
-All contributions must be covered under a 
-[Foundation CLA](http://dojofoundation.org/about/cla) to ensure IP cleanliness 
-and to enable any of these functions to be potentially merged into Dojo itself. 
-We won't know the true usefulness and stability of these functions without you,
-so play around, and leave some feedback.
 
 
 
