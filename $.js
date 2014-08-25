@@ -1,4 +1,4 @@
-define(["dojo"], function(dojo){
+define(["dojo", "dojo/NodeList-manipulate"], function(dojo){
 
 	// first, some simple aliases
 	var d = dojo,
@@ -60,6 +60,7 @@ define(["dojo"], function(dojo){
 			return d.doc.selection.createRange().text || "";
 		}
 	;
+
 
 	// namespace-polluting functions:
 	d[_selection] = function(){ return selection() + ""; }
@@ -660,6 +661,7 @@ define(["dojo"], function(dojo){
 		toggle: _each(d.toggle),
 		destroy: _each(d.destroy), 
 		selectable: _each(d.setSelectable),
+		click: _each(d.click),
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
@@ -692,6 +694,16 @@ define(["dojo"], function(dojo){
 				return d.create(tagName);
 			})._stash(this); 
 		},
+
+		click: function(cb) {
+			console.log("click", cb, this);
+			this.onclick(cb);
+		},
+
+		// text: function() {
+		// 	console.log("text", this)
+		// 	return d.query(this).text();
+		// },
 		
 		size: function(boxType){
 			// summary: 
@@ -869,8 +881,13 @@ define(["dojo"], function(dojo){
 			this.length && d.xhr(method || "GET", d._mixin({ url:url }, extraArgs))
 				.addCallback(this, function(r){ this.addContent(r, "only"); });
 			return this; // dojo.NodeList
+		},
+
+		on: function() {
+			console.log("yoon", arguments);
+			return this;
 		}
-		
+
 	});
 	
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
@@ -924,16 +941,32 @@ define(["dojo"], function(dojo){
 		//	or someone has called dojo.conflict())
 		//	|	if(dojo.config.conflict){ /* $ is available */ }
 		//
-		d.global.$ = d.mixin(function(){ 
-			return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} } );
+		d.global.$ = d.mixin(
+			function(){ 
+				return d.mixin(d.query.apply(this, arguments), $.fn); 
+			}, 
+			{ 
+				fn: {},
+				extend: function(){
+					if (arguments[0] === true) {
+						throw NotImplemented;
+					}
+					for (i = 1; i < arguments.length; i++) {
+						d.mixin(arguments[0], arguments[i])
+					}
+				}
+			} 
+		);
 		d.global.$.fn.ready = d.ready;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
 
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");
+
 	if(d.config.conflict){ 
-	//>>excludeEnd("autoConflict"); 
-		d.conflict(); 
+	//>>excludeEnd("autoConflict");
+		d.conflict();
+		d.global.jQuery = d.global.$;
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");	
 	}
 	//>>excludeEnd("autoConflict"); 
